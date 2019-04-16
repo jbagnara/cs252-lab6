@@ -2,10 +2,22 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Everybody Plays Tetris</title>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" type="text/css" href="{% static 'css/tetris.css' %}">
     </head>
 
     <body>
-        <canvas id="field" height="700" width="350" left="50%"></canvas>
+        <div style"position:relative">
+            <!--keep width and height here not in css, otherwise the canvas will look strange-->
+            <canvas id="canvas2" width="350px" height="700px"></canvas> <!--displays the grid and borders-->
+            <canvas id="canvas1" width="350px" height="700px"></canvas> <!--displays everything else-->
+        </div>
+
         <script src="{% static 'js/tetrominoes.js' %}"></script>
+        <script src="{% static 'js/field.js' %}"></script>
     </body>
 </html>
