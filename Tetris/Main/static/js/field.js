@@ -84,6 +84,9 @@ Field.prototype.drawField = function() {
 
 }
 
+/*
+ * 
+*/
 function Piece(tetromino, color) {
 	this.tetromino = tetromino;
 	this.color = color;
@@ -96,7 +99,10 @@ function Piece(tetromino, color) {
 	this.y = 3;
 }
 
-Piece.prototype.draw = function(field) {
+/*
+ * Draws a piece onto the field given by the parameter 'field'
+*/
+Piece.prototype.draw = function() {
 	for( r = 0; r < this.activeTetromino.length; r++){
         for(c = 0; c < this.activeTetromino.length; c++){
             // we draw only occupied squares
@@ -108,10 +114,66 @@ Piece.prototype.draw = function(field) {
 	}
 }
 
+/*
+ * Undraws a piece onto the field given by the parameter 'field'
+*/
+Piece.prototype.undraw = function() {
+    for( r = 0; r < this.activeTetromino.length; r++){
+        for(c = 0; c < this.activeTetromino.length; c++){
+            // we draw only occupied squares
+            if( this.activeTetromino[r][c]){
+                // drawSquare(this.x + c,this.y + r, color);
+				field.undrawBlock(this.x + c, this.y + r);
+            }
+        }
+	}
+}
+
+Piece.prototype.moveDown = function() {
+    this.undraw();
+    this.y++;
+    this.draw();
+}
+
+Piece.prototype.moveLeft = function() {
+    this.undraw();
+    this.x--;
+    this.draw();
+}
+
+Piece.prototype.moveRight = function() {
+    this.undraw();
+    this.x++;
+    this.draw();
+}
+
+
+document.addEventListener("keydown",CONTROL);
+    
+function CONTROL(event){
+    if(event.keyCode == 37){
+        piece.moveLeft();
+    }
+    else if(event.keyCode == 38){
+        console.log("rotate here")
+    }
+    else if(event.keyCode == 39){
+        piece.moveRight();
+    }
+    else if(event.keyCode == 40){
+        piece.moveDown();
+    }
+}
+
+/* ------------------------RUN PROGRAM ------------------------------*/
 var field = new Field();
 //console.log("drawing block");
 field.drawBlock(0,0,"orange");
 //console.log("undrawing block");
 // field.undrawBlock(0,0);
-var piece = new Piece(PIECES[0][0], PIECES[0][1]);
+var piece = new Piece(PIECES[1][0]);
 piece.draw(field);
+piece.moveDown();
+    
+
+
