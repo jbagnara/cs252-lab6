@@ -91,8 +91,11 @@ function Piece(tetromino, color) {
 	this.tetromino = tetromino;
 	this.color = color;
 
+    // change this number to change the orientation of the piece
+
+    this.orientation = 0;
 	// initial orientation of the piece
-	this.activeTetromino = this.tetromino[0];
+	this.activeTetromino = this.tetromino[this.orientation];
 
 	// starting position
 	this.x = 3;
@@ -147,6 +150,16 @@ Piece.prototype.moveRight = function() {
     this.draw();
 }
 
+Piece.prototype.rotate = function() {
+    piece.undraw();
+    piece.orientation++;
+    if (piece.orientation >= 4) {
+        piece.orientation = piece.orientation % 4;
+    }
+    piece.activeTetromino = piece.tetromino[piece.orientation];
+    piece.draw();
+}
+
 
 document.addEventListener("keydown",CONTROL);
     
@@ -155,7 +168,8 @@ function CONTROL(event){
         piece.moveLeft();
     }
     else if(event.keyCode == 38){
-        console.log("rotate here")
+        // console.log("rotate here")
+        piece.rotate();
     }
     else if(event.keyCode == 39){
         piece.moveRight();
