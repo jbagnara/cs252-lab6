@@ -67,5 +67,3 @@ Field.prototype.drawBlock = function(x, y, color) {
 Field.prototype.drawField = function() {
 
 }
-
-var field = new Field();
