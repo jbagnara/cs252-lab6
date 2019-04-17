@@ -22,9 +22,9 @@
             <input id="yInput" type="number" min="0" max="19" value="0"><br>
         </div>
 
-        <sciprt>
-            var roomName = {{ room_name_json }};
-        </sciprt>
+        <script>
+            var roomName = {{ room_name }}; //can't be in the js file for some reason
+        </script>
 
         <script src="{% static 'js/tetrominoes.js' %}"></script>
         <script src="{% static 'js/field.js' %}"></script>

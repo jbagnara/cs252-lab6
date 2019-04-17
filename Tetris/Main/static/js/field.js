@@ -64,6 +64,10 @@ Field.prototype.drawBlock = function(x, y, color) {
     this.canvas.fillRect(x*this.cellSize, y*this.cellSize, this.cellSize, this.cellSize);
 }
 
+Field.prototype.clearBlock = function(x, y) {
+    this.canvas.clearRect(x*this.cellSize, y*this.cellSize, this.cellSize, this.cellSize);
+}
+
 Field.prototype.drawField = function() {
 
 }

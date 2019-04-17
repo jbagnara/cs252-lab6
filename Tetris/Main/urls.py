@@ -19,5 +19,5 @@ from . import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('home/', views.home, name='home'),
-    path('tetris/', views.tetris, name='tetris'),
+    path('tetris/<str:room_name>/', views.tetris, name='tetris'),
 ]
