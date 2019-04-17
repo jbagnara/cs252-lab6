@@ -161,7 +161,6 @@ Piece.prototype.rotate = function() {
 }
 
 
-document.addEventListener("keydown",CONTROL);
     
 function CONTROL(event){
     if(event.keyCode == 37){
@@ -179,15 +178,22 @@ function CONTROL(event){
     }
 }
 
+function genRandomPiece() {
+    min = Math.ceil(0);
+    max = Math.floor(6);
+    
+    rand_num = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    new_piece = new Piece(PIECES[rand_num][0]);
+    
+    return new_piece;
+}
+
 /* ------------------------RUN PROGRAM ------------------------------*/
 var field = new Field();
-//console.log("drawing block");
-field.drawBlock(0,0,"orange");
-//console.log("undrawing block");
-// field.undrawBlock(0,0);
-var piece = new Piece(PIECES[1][0]);
+// var piece = new Piece(PIECES[1][0]);
+var piece = genRandomPiece();
 piece.draw(field);
-piece.moveDown();
-    
 
 
+    document.addEventListener("keydown",CONTROL);
