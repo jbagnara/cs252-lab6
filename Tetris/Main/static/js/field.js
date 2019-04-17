@@ -1,3 +1,14 @@
+const PIECES = [
+    [z,"red"],
+    [s,"green"],
+    [t,"yellow"],
+    [o,"blue"],
+    [l,"purple"],
+    [i,"cyan"],
+    [j,"orange"]
+];
+
+
 function Field() {
     this.canvas = document.getElementById("canvas2");
     this.height = this.canvas.offsetHeight;
@@ -76,10 +87,31 @@ Field.prototype.drawField = function() {
 function Piece(tetromino, color) {
 	this.tetromino = tetromino;
 	this.color = color;
+
+	// initial orientation of the piece
+	this.activeTetromino = this.tetromino[0];
+
+	// starting position
+	this.x = 3;
+	this.y = 3;
+}
+
+Piece.prototype.draw = function(field) {
+	for( r = 0; r < this.activeTetromino.length; r++){
+        for(c = 0; c < this.activeTetromino.length; c++){
+            // we draw only occupied squares
+            if( this.activeTetromino[r][c]){
+                // drawSquare(this.x + c,this.y + r, color);
+				field.drawBlock(this.x + c, this.y + r, "orange");
+            }
+        }
+	}
 }
 
 var field = new Field();
 //console.log("drawing block");
 field.drawBlock(0,0,"orange");
 //console.log("undrawing block");
-field.undrawBlock(0,0);
+// field.undrawBlock(0,0);
+var piece = new Piece(PIECES[0][0], PIECES[0][1]);
+piece.draw(field);
