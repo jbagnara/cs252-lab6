@@ -64,8 +64,22 @@ Field.prototype.drawBlock = function(x, y, color) {
     this.canvas.fillRect(x*this.cellSize, y*this.cellSize, this.cellSize, this.cellSize);
 }
 
+Field.prototype.undrawBlock = function(x, y) {
+	this.canvas.fillStyle = "white";
+	this.canvas.fillRect(x*this.cellSize, y*this.cellSize, this.cellSize, this.cellSize);	
+}
+
 Field.prototype.drawField = function() {
 
 }
 
+function Piece(tetromino, color) {
+	this.tetromino = tetromino;
+	this.color = color;
+}
+
 var field = new Field();
+//console.log("drawing block");
+field.drawBlock(0,0,"orange");
+//console.log("undrawing block");
+field.undrawBlock(0,0);
