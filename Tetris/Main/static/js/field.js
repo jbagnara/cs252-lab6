@@ -20,6 +20,8 @@ function Field() {
 
     this.canvas = document.getElementById("canvas1").getContext("2d");
     this.canvas.lineJoin = "miter";
+    this.canvas.fillStyle = "white";
+    this.canvas.fillRect(0, 0, this.width, this.height);
 }
 
 /*
@@ -132,6 +134,18 @@ Piece.prototype.undraw = function() {
 	}
 }
 
+/*
+Piece.prototype.collided() = function() {
+    for( r = 0; r < piece.length; r++){
+        for(c = 0; c < piece.length; c++){
+            //if(!piece[r][c]){
+              //  continue;
+            //}
+        }
+    }
+}
+*/
+
 Piece.prototype.moveDown = function() {
     this.undraw();
     this.y++;
@@ -159,8 +173,6 @@ Piece.prototype.rotate = function() {
     piece.activeTetromino = piece.tetromino[piece.orientation];
     piece.draw();
 }
-
-
     
 function CONTROL(event){
     if(event.keyCode == 37){
@@ -196,4 +208,4 @@ var piece = genRandomPiece();
 piece.draw(field);
 
 
-    document.addEventListener("keydown",CONTROL);
+document.addEventListener("keydown",CONTROL);
