@@ -1,24 +1,52 @@
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
-class TetrisConsumer(WebsocketConsumer):
+class TetrisConsumer(AsyncWebsocketConsumer):
     x = 0
     y = 0
 
-    def connect(self):
-        self.accept()
+    async def connect(self):
+        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        self.room_group_name = f'tetris_{self.room_name}'
 
-    def disconnect(self, close_code):
-        pass
+        #join room group
+        await self.channel_layer.group_add(
+            self.room_group_name,
+            self.channel_name
+        )
+
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        #leave room group
+        await self.channel_layer.group_discard(
+            self.room_group_name,
+            self.channel_name
+        )
     
-    #get updates from client
-    def receive(self, text_data):
-        print('getting and sending data to client')
-        data = json.loads(text_data)
-        self.x = data['x']
-        self.y = data['y']
+    async def receive(self, text_data):
+        print('getting from a client, sending data to group')
 
-        self.send(text_data=json.dumps({
+        #get updates from a single client
+        data = json.loads(text_data)
+        x = data['x']
+        y = data['y']
+
+        #send message to group
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {'type': 'update_pos', 'x': x, 'y': y}
+        )
+
+    async def update_pos(self, event):
+        print('getting from group, sending data to a client')
+
+        #get message from room group
+        self.x = event['x']
+        self.y = event['y']
+
+        #send message to each client
+        await self.send(text_data=json.dumps({
             'x': self.x,
             'y': self.y
         }))
