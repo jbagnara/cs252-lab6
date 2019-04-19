@@ -19,6 +19,8 @@ function Field() {
 
     this.canvas = document.getElementById("canvas1").getContext("2d");
     this.canvas.lineJoin = "miter";
+    this.canvas.fillStyle = "white";
+    this.canvas.fillRect(0, 0, this.width, this.height);
 }
 
 /*
@@ -83,19 +85,28 @@ Field.prototype.drawField = function() {
 
 }
 
+/*
+ * 
+*/
 function Piece(tetromino, color) {
 	this.tetromino = tetromino;
 	this.color = color;
 
+    // change this number to change the orientation of the piece
+
+    this.orientation = 0;
 	// initial orientation of the piece
-	this.activeTetromino = this.tetromino[0];
+	this.activeTetromino = this.tetromino[this.orientation];
 
 	// starting position
 	this.x = 3;
 	this.y = 3;
 }
 
-Piece.prototype.draw = function(field) {
+/*
+ * Draws a piece onto the field given by the parameter 'field'
+*/
+Piece.prototype.draw = function() {
 	for( r = 0; r < this.activeTetromino.length; r++){
         for(c = 0; c < this.activeTetromino.length; c++){
             // we draw only occupied squares
@@ -107,10 +118,93 @@ Piece.prototype.draw = function(field) {
 	}
 }
 
+/*
+ * Undraws a piece onto the field given by the parameter 'field'
+*/
+Piece.prototype.undraw = function() {
+    for( r = 0; r < this.activeTetromino.length; r++){
+        for(c = 0; c < this.activeTetromino.length; c++){
+            // we draw only occupied squares
+            if( this.activeTetromino[r][c]){
+                // drawSquare(this.x + c,this.y + r, color);
+				field.undrawBlock(this.x + c, this.y + r);
+            }
+        }
+	}
+}
+
+/*
+Piece.prototype.collided() = function() {
+    for( r = 0; r < piece.length; r++){
+        for(c = 0; c < piece.length; c++){
+            //if(!piece[r][c]){
+              //  continue;
+            //}
+        }
+    }
+}
+*/
+
+Piece.prototype.moveDown = function() {
+    this.undraw();
+    this.y++;
+    this.draw();
+}
+
+Piece.prototype.moveLeft = function() {
+    this.undraw();
+    this.x--;
+    this.draw();
+}
+
+Piece.prototype.moveRight = function() {
+    this.undraw();
+    this.x++;
+    this.draw();
+}
+
+Piece.prototype.rotate = function() {
+    piece.undraw();
+    piece.orientation++;
+    if (piece.orientation >= 4) {
+        piece.orientation = piece.orientation % 4;
+    }
+    piece.activeTetromino = piece.tetromino[piece.orientation];
+    piece.draw();
+}
+    
+function CONTROL(event){
+    if(event.keyCode == 37){
+        piece.moveLeft();
+    }
+    else if(event.keyCode == 38){
+        // console.log("rotate here")
+        piece.rotate();
+    }
+    else if(event.keyCode == 39){
+        piece.moveRight();
+    }
+    else if(event.keyCode == 40){
+        piece.moveDown();
+    }
+}
+
+function genRandomPiece() {
+    min = Math.ceil(0);
+    max = Math.floor(6);
+    
+    rand_num = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    new_piece = new Piece(PIECES[rand_num][0]);
+    
+    return new_piece;
+}
+
+/* ------------------------RUN PROGRAM ------------------------------*/
 var field = new Field();
-//console.log("drawing block");
-field.drawBlock(0,0,"orange");
-//console.log("undrawing block");
-// field.undrawBlock(0,0);
-var piece = new Piece(PIECES[0][0], PIECES[0][1]);
+// var piece = new Piece(PIECES[1][0]);
+var piece = genRandomPiece();
 piece.draw(field);
+
+
+document.addEventListener("keydown",CONTROL);
