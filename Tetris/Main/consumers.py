@@ -1,9 +1,16 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
+import enum
+from . import tetris
+
+class Moves(enum.Enum):
+    LEFT = 37
+    ROTATE = 38
+    RIGHT = 39
+    DOWN = 40
 
 class TetrisConsumer(AsyncWebsocketConsumer):
-    x = 0
-    y = 0
+    tetris = tetris.Tetris()
 
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
@@ -29,24 +36,34 @@ class TetrisConsumer(AsyncWebsocketConsumer):
 
         #get updates from a single client
         data = json.loads(text_data)
-        x = data['x']
-        y = data['y']
+        move = data['move']
 
         #send message to group
         await self.channel_layer.group_send(
             self.room_group_name,
-            {'type': 'update_pos', 'x': x, 'y': y}
+            {'type': 'move_piece', 'move': move}
         )
 
-    async def update_pos(self, event):
+    async def move_piece(self, event):
         print('getting from group, sending data to a client')
 
         #get message from room group
-        self.x = event['x']
-        self.y = event['y']
+        move = event['move']
+
+        if (move == Moves.LEFT):
+            self.tetris.move_piece_left()
+        elif (move == Moves.ROTATE):
+            self.tetris.curr_piece.rotate()
+        elif (move == Moves.RIGHT):
+            self.tetris.move_piece_right()
+        elif (move == Moves.DOWN):
+            self.tetris.move_piece_down()
 
         #send message to each client
+        field = json.dumps({'field': self.tetris.field})
+
+        print(field)
+
         await self.send(text_data=json.dumps({
-            'x': self.x,
-            'y': self.y
+            'field': self.tetris.field
         }))

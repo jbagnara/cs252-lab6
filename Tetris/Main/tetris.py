@@ -13,6 +13,7 @@ class Tetris():
 
         self.field = [[0 for y in range(self.height)] for x in range(self.width)]
         self.curr_piece = tetromino.Piece() #get random tetromino
+        self.draw_piece()
 
     def move_piece_left(self):
         self.undraw_piece()
@@ -24,7 +25,7 @@ class Tetris():
         self.curr_piece.x += 1
         self.draw_piece()
 
-    def move_pice_down(self):
+    def move_piece_down(self):
         self.undraw_piece()
         self.curr_piece.y += 1
         self.draw_piece()
