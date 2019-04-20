@@ -13,8 +13,8 @@
     <body>
         <div style"position:relative">
             <!--keep width and height here not in css, otherwise the canvas will look strange-->
-            <canvas id="canvas2" width="350px" height="700px"></canvas> <!--displays the grid and borders-->
-            <canvas id="canvas1" width="350px" height="700px"></canvas> <!--displays everything else-->
+            <canvas id="canvas_grid" width="350px" height="700px"></canvas> <!--displays the grid and borders-->
+            <canvas id="canvas" width="350px" height="700px"></canvas> <!--displays everything else-->
         </div>
 
         <div align="right">
@@ -23,10 +23,10 @@
         </div>
 
         <script>
-            var roomName = {{ room_name }}; //can't be in the js file for some reason
+            var roomName = {{room_name}}; //can't be in the js file for some reason
         </script>
 
-        <script src="{% static 'js/tetrominoes.js' %}"></script>
+        <script src="{% static 'js/piece.js' %}"></script>
         <script src="{% static 'js/field.js' %}"></script>
         <script src="{% static 'js/tetris.js' %}"></script>
     </body>

@@ -1,9 +1,8 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-import enum
 from . import tetris
 
-class Moves(enum.Enum):
+class Moves():
     LEFT = 37
     ROTATE = 38
     RIGHT = 39
@@ -38,7 +37,7 @@ class TetrisConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         move = data['move']
 
-        #send message to group
+        #send message to room group
         await self.channel_layer.group_send(
             self.room_group_name,
             {'type': 'move_piece', 'move': move}
@@ -50,6 +49,7 @@ class TetrisConsumer(AsyncWebsocketConsumer):
         #get message from room group
         move = event['move']
 
+        #update game state
         if (move == Moves.LEFT):
             self.tetris.move_piece_left()
         elif (move == Moves.ROTATE):
@@ -60,10 +60,6 @@ class TetrisConsumer(AsyncWebsocketConsumer):
             self.tetris.move_piece_down()
 
         #send message to each client
-        field = json.dumps({'field': self.tetris.field})
-
-        print(field)
-
         await self.send(text_data=json.dumps({
             'field': self.tetris.field
         }))
