@@ -1,11 +1,6 @@
 from . import piece
 
-<<<<<<< HEAD
 class CellState():
-=======
-
-class CellState(enum.Enum):
->>>>>>> d4c4cfdc4ada9975e3ecaeb5688901c743852000
     EMPTY = 0
     FULL = 1
     PLACED = 2
@@ -36,16 +31,9 @@ class Tetris():
         self.curr_piece.y += 1
         self.draw_piece()
 
-<<<<<<< HEAD
     def rotate_piece(self):
         self.undraw_piece()
         self.curr_piece.orientation = (self.curr_piece.orientation + 1) % len(self.curr_piece.tetromino)
-=======
-    def rotate(self):
-        self.undraw_piece()
-        self.orientation = (self.orientation + 1) % len(self.tetromino)
-        self.activeTetromino = self.tetromino[self.orientation]
->>>>>>> d4c4cfdc4ada9975e3ecaeb5688901c743852000
         self.draw_piece()
 
     def draw_piece(self):
