@@ -81,8 +81,25 @@ Field.prototype.undrawBlock = function(x, y) {
 	this.canvas.fillRect(x*this.cellSize, y*this.cellSize, this.cellSize, this.cellSize);	
 }
 
-Field.prototype.drawField = function() {
+Field.prototype.drawField = function(board) {
+    console.log(board)
 
+    for( x = 0; x < 10; x++) {
+        for(y = 0; y < 20; y++) {
+            if (board[x][y] === undefined) {
+                console.log(x, y, "undefined value");
+            }
+            else if (board[x][y] === 0) {
+                this.drawBlock(x, y, "white");
+            }
+            else if (board[x][y] === 1) {
+                this.drawBlock(x, y, "red");
+            }
+            else {
+                console.log("unknown value");
+            }
+        }
+    }
 }
 
 /*
@@ -199,10 +216,10 @@ function genRandomPiece() {
 }
 
 /* ------------------------RUN PROGRAM ------------------------------*/
-var field = new Field();
-// var piece = new Piece(PIECES[1][0]);
-var piece = genRandomPiece();
-piece.draw(field);
+// var field = new Field();
+// // var piece = new Piece(PIECES[1][0]);
+// var piece = genRandomPiece();
+// piece.draw(field);
 
 
-document.addEventListener("keydown",CONTROL);
+// document.addEventListener("keydown",CONTROL);
