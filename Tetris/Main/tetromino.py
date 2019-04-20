@@ -3,7 +3,7 @@ import enum
 
 Z = [
     [[1,1,0],[0,1,1],[0,0,0]],
-	[[0,1,0],[0,1,1],[0,1,0]],
+	[[0,0,1],[0,1,1],[0,1,0]],
 	[[0,0,0],[1,1,0],[0,1,1]],
 	[[0,1,0],[1,1,0],[1,0,0]]
 ]
@@ -44,5 +44,5 @@ class Piece():
         self.x = 4
         self.y = 0
 
-    def rotate(self):
-        self.orientation = (self.orientation + 1) % len(self.tetromino)
+    #def rotate(self):
+    #    self.orientation = (self.orientation + 1) % len(self.tetromino)

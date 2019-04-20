@@ -92,9 +92,9 @@ function Piece(tetromino, color) {
 	this.tetromino = tetromino;
 	this.color = color;
 
-    // change this number to change the orientation of the piece
+    	// change this number to change the orientation of the piece
 
-    this.orientation = 0;
+	this.orientation = 0;
 	// initial orientation of the piece
 	this.activeTetromino = this.tetromino[this.orientation];
 
@@ -108,13 +108,13 @@ function Piece(tetromino, color) {
 */
 Piece.prototype.draw = function() {
 	for( r = 0; r < this.activeTetromino.length; r++){
-        for(c = 0; c < this.activeTetromino.length; c++){
-            // we draw only occupied squares
-            if( this.activeTetromino[r][c]){
-                // drawSquare(this.x + c,this.y + r, color);
-				field.drawBlock(this.x + c, this.y + r, "orange");
-            }
-        }
+        	for(c = 0; c < this.activeTetromino.length; c++){
+        		// we draw only occupied squares
+            		if( this.activeTetromino[r][c]){
+                	// drawSquare(this.x + c,this.y + r, color);
+			field.drawBlock(this.x + c, this.y + r, "orange");
+            		}
+        	}
 	}
 }
 
@@ -127,10 +127,10 @@ Piece.prototype.undraw = function() {
             // we draw only occupied squares
             if( this.activeTetromino[r][c]){
                 // drawSquare(this.x + c,this.y + r, color);
-				field.undrawBlock(this.x + c, this.y + r);
+		field.undrawBlock(this.x + c, this.y + r);
             }
         }
-	}
+    }
 }
 
 /*
@@ -166,9 +166,7 @@ Piece.prototype.moveRight = function() {
 Piece.prototype.rotate = function() {
     piece.undraw();
     piece.orientation++;
-    if (piece.orientation >= 4) {
-        piece.orientation = piece.orientation % 4;
-    }
+    piece.orientation = piece.orientation % piece.tetromino.length;
     piece.activeTetromino = piece.tetromino[piece.orientation];
     piece.draw();
 }

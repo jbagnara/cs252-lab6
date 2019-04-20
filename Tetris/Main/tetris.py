@@ -29,6 +29,12 @@ class Tetris():
         self.curr_piece.y += 1
         self.draw_piece()
 
+    def rotate(self):
+	self.undraw_piece()
+	self.orientation = (self.orientation + 1) % len(self.tetromino)
+	self.activeTetromino = self.tetromino[self.orientation]
+	self.draw_piece()
+
     def draw_piece(self):
         piece = self.curr_piece.tetromino[self.curr_piece.orientation]
 
