@@ -53,7 +53,7 @@ class TetrisConsumer(AsyncWebsocketConsumer):
         if (move == Moves.LEFT):
             self.tetris.move_piece_left()
         elif (move == Moves.ROTATE):
-            self.tetris.curr_piece.rotate()
+            self.tetris.rotate_piece()
         elif (move == Moves.RIGHT):
             self.tetris.move_piece_right()
         elif (move == Moves.DOWN):
