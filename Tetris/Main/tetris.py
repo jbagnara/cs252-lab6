@@ -1,18 +1,21 @@
 import enum
 from . import tetromino
 
+
 class CellState(enum.Enum):
     EMPTY = 0
     FULL = 1
     PLACED = 2
+
 
 class Tetris():
     def __init__(self):
         self.width = 10
         self.height = 20
 
-        self.field = [[0 for y in range(self.height)] for x in range(self.width)]
-        self.curr_piece = tetromino.Piece() #get random tetromino
+        self.field = [[0 for y in range(self.height)]
+                      for x in range(self.width)]
+        self.curr_piece = tetromino.Piece()  # get random tetromino
         self.draw_piece()
 
     def move_piece_left(self):
@@ -31,10 +34,10 @@ class Tetris():
         self.draw_piece()
 
     def rotate(self):
-	self.undraw_piece()
-	self.orientation = (self.orientation + 1) % len(self.tetromino)
-	self.activeTetromino = self.tetromino[self.orientation]
-	self.draw_piece()
+        self.undraw_piece()
+        self.orientation = (self.orientation + 1) % len(self.tetromino)
+        self.activeTetromino = self.tetromino[self.orientation]
+        self.draw_piece()
 
     def draw_piece(self):
         piece = self.curr_piece.tetromino[self.curr_piece.orientation]
