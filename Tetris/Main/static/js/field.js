@@ -87,12 +87,7 @@ Field.prototype.undrawBlock = function(x, y) {
 Field.prototype.drawField = function(board) {
     for( x = 0; x < game_width; x++) {
         for(y = 0; y < game_height; y++) {
-            if (board[x][y] === 0) {
-                this.drawBlock(x, y, "white");
-            }
-            else if (board[x][y] === 1) {
-                this.drawBlock(x, y, "red");
-            }
+            this.drawBlock(x, y, board[x][y]);
         }
     }
 }
