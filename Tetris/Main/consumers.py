@@ -1,6 +1,6 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-from . import tetris
+from . tetris import Tetris
 
 class Moves():
     LEFT = 37
@@ -9,11 +9,18 @@ class Moves():
     DOWN = 40
 
 class TetrisConsumer(AsyncWebsocketConsumer):
-    tetris = tetris.Tetris()
+    games = {}
 
+    #TODO: make each channel group have there own game
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = f'tetris_{self.room_name}'
+
+        if not self.room_name in self.games:
+            self.games[self.room_name] = Tetris()
+
+        tetris = self.games[self.room_name]
+        tetris.num_players += 1
 
         #join room group
         await self.channel_layer.group_add(
@@ -23,7 +30,18 @@ class TetrisConsumer(AsyncWebsocketConsumer):
 
         await self.accept()
 
+        #send init game state
+        await self.send(text_data=json.dumps({
+            'field': tetris.field
+        }))
+
     async def disconnect(self, close_code):
+        tetris = self.games[self.room_name]
+        tetris.num_players -= 1
+
+        if tetris.num_players <= 0:
+            self.games.pop(self.room_name)
+
         #leave room group
         await self.channel_layer.group_discard(
             self.room_group_name,
@@ -50,16 +68,18 @@ class TetrisConsumer(AsyncWebsocketConsumer):
         move = event['move']
 
         #update game state
+        tetris = self.games[self.room_name] 
+
         if (move == Moves.LEFT):
-            self.tetris.move_piece_left()
+            tetris.move_piece_left()
         elif (move == Moves.ROTATE):
-            self.tetris.rotate_piece()
+            tetris.rotate_piece()
         elif (move == Moves.RIGHT):
-            self.tetris.move_piece_right()
+            tetris.move_piece_right()
         elif (move == Moves.DOWN):
-            self.tetris.move_piece_down()
+            tetris.move_piece_down()
 
         #send message to each client
         await self.send(text_data=json.dumps({
-            'field': self.tetris.field
+            'field': tetris.field
         }))

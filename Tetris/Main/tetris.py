@@ -7,6 +7,8 @@ class Tetris():
 
         self.field = [[CellState.EMPTY for y in range(self.height)]
                       for x in range(self.width)]
+
+        self.num_players = 0
         
         self.curr_piece = Piece()  # get random tetromino
         self.draw_piece()
