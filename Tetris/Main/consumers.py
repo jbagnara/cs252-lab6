@@ -1,6 +1,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
-import json
 from . tetris import Tetris
+import asyncio
+import json
 
 class Moves():
     LEFT = 37
@@ -9,18 +10,19 @@ class Moves():
     DOWN = 40
 
 class TetrisConsumer(AsyncWebsocketConsumer):
-    games = {}
+    games = {} #available to all room groups
 
-    #TODO: make each channel group have there own game
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = f'tetris_{self.room_name}'
 
+        #create and get game
         if not self.room_name in self.games:
             self.games[self.room_name] = Tetris()
+            self.loop_task = asyncio.create_task(self.game_loop())
 
-        tetris = self.games[self.room_name]
-        tetris.num_players += 1
+        self.tetris = self.games[self.room_name] #available to all clients in a room group
+        self.tetris.num_players += 1
 
         #join room group
         await self.channel_layer.group_add(
@@ -32,54 +34,61 @@ class TetrisConsumer(AsyncWebsocketConsumer):
 
         #send init game state
         await self.send(text_data=json.dumps({
-            'field': tetris.field
+            'field': self.tetris.field
+        }))
+
+    async def game_loop(self):
+        while True:     
+            self.tetris.move_piece_down()
+
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {'type': 'update_game'}
+            )
+
+            try:
+                await asyncio.sleep(1)
+            except asyncio.CancelledError:
+                raise
+    
+    async def receive(self, text_data):
+        #get updates from a single client
+        data = json.loads(text_data)
+        move = data['move']
+
+        #update game state 
+        if (move == Moves.LEFT):
+            self.tetris.move_piece_left()
+        elif (move == Moves.ROTATE):
+            self.tetris.rotate_piece()
+        elif (move == Moves.RIGHT):
+            self.tetris.move_piece_right()
+        elif (move == Moves.DOWN):
+            self.tetris.move_piece_down()
+
+        #send message to room group
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {'type': 'update_game'}
+        )
+
+    async def update_game(self, event):
+        #send message to each client
+        await self.send(text_data=json.dumps({
+            'field': self.tetris.field
         }))
 
     async def disconnect(self, close_code):
-        tetris = self.games[self.room_name]
-        tetris.num_players -= 1
+        self.tetris.num_players -= 1
 
-        if tetris.num_players <= 0:
+        #close game if needed
+        if self.tetris.num_players <= 0:
             self.games.pop(self.room_name)
+            if hasattr(self, 'loop_task'):
+                self.loop_task.cancel()
 
         #leave room group
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
         )
-    
-    async def receive(self, text_data):
-        print('getting from a client, sending data to group')
-
-        #get updates from a single client
-        data = json.loads(text_data)
-        move = data['move']
-
-        #send message to room group
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {'type': 'move_piece', 'move': move}
-        )
-
-    async def move_piece(self, event):
-        print('getting from group, sending data to a client')
-
-        #get message from room group
-        move = event['move']
-
-        #update game state
-        tetris = self.games[self.room_name] 
-
-        if (move == Moves.LEFT):
-            tetris.move_piece_left()
-        elif (move == Moves.ROTATE):
-            tetris.rotate_piece()
-        elif (move == Moves.RIGHT):
-            tetris.move_piece_right()
-        elif (move == Moves.DOWN):
-            tetris.move_piece_down()
-
-        #send message to each client
-        await self.send(text_data=json.dumps({
-            'field': tetris.field
-        }))
