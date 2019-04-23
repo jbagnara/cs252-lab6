@@ -51,6 +51,8 @@ class Tetris():
         self.curr_piece.y += 1
         self.draw_piece()
 
+        self.clear_rows()
+
     def rotate_piece(self):
         self.undraw_piece()
         self.curr_piece.orientation= (
@@ -87,7 +89,8 @@ class Tetris():
             if self.is_row_full(y):
                 num_full_rows += 1
 
-        print(num_full_rows)
+        if num_full_rows == 0:
+            return
 
         #update score
         if num_full_rows == 1: #single
@@ -99,20 +102,17 @@ class Tetris():
         elif num_full_rows >= 4: #tetris
             self.score += 1200
 
-        #update field
+        #clear rows
         for y in range(self.height-num_full_rows, self.height):
             for x in range(self.width):
                 self.field[x][y] = CellState.EMPTY
                 self.bool_field[x][y] = 0
 
-        return num_full_rows
-
-    def move_rows_down(self, num_full_rows):
+        #move rows down
         for y in range(self.height-1, 0, -1):
             for x in range(self.width):
                 self.field[x][y] = self.field[x][y-num_full_rows]
                 self.bool_field[x][y] = self.bool_field[x][y-num_full_rows]
-
             
         #add new rows at top
         for y in range(num_full_rows):

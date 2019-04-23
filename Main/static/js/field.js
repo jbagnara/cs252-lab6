@@ -91,3 +91,23 @@ Field.prototype.drawField = function(board) {
         }
     }
 }
+
+//only for debugging
+Field.prototype.drawBoolBlock = function(x, y, color) {
+    this.canvas.fillStyle = color;
+    this.canvas.fillRect(x*this.cellSize, y*this.cellSize, this.cellSize/2, this.cellSize/2);
+}
+
+//only for debugging
+Field.prototype.drawBoolField = function(bool_board) {
+    console.log("bool field");
+
+    for( x = 0; x < game_width; x++) {
+        for(y = 0; y < game_height; y++) {
+            if (bool_board[x][y] == 1)
+                this.drawBoolBlock(x, y, "black");
+            else
+                this.drawBoolBlock(x, y, "grey");
+        }
+    }
+}
