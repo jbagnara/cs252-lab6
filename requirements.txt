@@ -21,4 +21,3 @@ aioredis==1.2.0
 msgpack==0.6.1 
 hiredis==1.0.0 
 channels_redis==2.3.3 
-pypiwin32==223 
