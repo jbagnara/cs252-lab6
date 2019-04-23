@@ -58,5 +58,7 @@ class Piece():
     def __init__(self):
         self.tetromino = PIECES[random.randint(0, len(PIECES)-1)]
         self.orientation = 0
+
+		#pos of top left block
         self.x = 3
         self.y = -2

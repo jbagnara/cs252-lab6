@@ -38,8 +38,11 @@ class TetrisConsumer(AsyncWebsocketConsumer):
         }))
 
     async def game_loop(self):
-        while True:     
+        while True:
+            print('loop')
             self.tetris.move_piece_down()
+
+            print('x:', self.tetris.curr_piece.x, 'y:', self.tetris.curr_piece.y)
 
             await self.channel_layer.group_send(
                 self.room_group_name,
