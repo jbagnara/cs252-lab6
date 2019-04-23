@@ -28,10 +28,28 @@ class Tetris():
         for y in range(len(piece)-1, -1, -1):
             for x in range(len(piece)-1, -1, -1):
                 if piece[x][y] != CellState.EMPTY:
-                    if self.curr_piece.y+y+1 > self.height-1 or self.bool_field[self.curr_piece.x+x][self.curr_piece.y+y+1]==1:  # buttom reached
+                    if self.curr_piece.y+y+1 > self.height-1 or self.bool_field[self.curr_piece.x+x][self.curr_piece.y+y+1]==1:  # bottom reached
                         self.write_piece()
                         self.curr_piece = Piece()
                         self.draw_piece()
+
+    def check_leftside(self):  # checks left indexes	
+        piece = self.curr_piece.tetromino[self.curr_piece.orientation]
+        for y in range(len(piece)-1, -1, -1):
+            for x in range(len(piece)-1, -1, -1):
+                if piece[x][y] != CellState.EMPTY:
+                    if self.curr_piece.x+x-1 <0 or self.bool_field[self.curr_piece.x+x-1][self.curr_piece.y+y]==1:  # side reached
+                        return 0
+        return 1
+    
+    def check_rightside(self):  # checks right indexes	
+        piece = self.curr_piece.tetromino[self.curr_piece.orientation]
+        for y in range(len(piece)-1, -1, -1):
+            for x in range(len(piece)-1, -1, -1):
+                if piece[x][y] != CellState.EMPTY:
+                    if self.curr_piece.x+x+1 > self.width-1 or self.bool_field[self.curr_piece.x+x+1][self.curr_piece.y+y]==1:  # side reached
+                        return 0
+        return 1
 
     def write_piece(self):  # writes piece to bool field
         piece = self.curr_piece.tetromino[self.curr_piece.orientation]
@@ -41,14 +59,16 @@ class Tetris():
                     self.bool_field[x][y]= 1
 
     def move_piece_left(self):
-        self.undraw_piece()
-        self.curr_piece.x -= 1
-        self.draw_piece()
+        if self.check_leftside():
+            self.undraw_piece()
+            self.curr_piece.x -= 1
+            self.draw_piece()
 
     def move_piece_right(self):
-        self.undraw_piece()
-        self.curr_piece.x += 1
-        self.draw_piece()
+        if self.check_rightside():
+            self.undraw_piece()
+            self.curr_piece.x += 1
+            self.draw_piece()
 
     def move_piece_down(self):
         self.check_bottom()
