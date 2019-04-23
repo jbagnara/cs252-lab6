@@ -51,6 +51,15 @@ class Tetris():
                         return 0
         return 1
 
+    def check_rotation(self):
+        piece = self.curr_piece.tetromino[(self.curr_piece.orientation+1 + 1) % len(self.curr_piece.tetromino)]
+        for y in range(len(piece)-1, -1, -1):
+            for x in range(len(piece)-1, -1, -1):
+                if piece[x][y] != CellState.EMPTY:
+                    if self.curr_piece.x+x <0 or self.curr_piece.x+x > self.width-1 or self.bool_field[self.curr_piece.x+x][self.curr_piece.y+y]==1:  #clipping occured from rotation
+                        return 0
+        return 1
+
     def write_piece(self):  # writes piece to bool field
         piece = self.curr_piece.tetromino[self.curr_piece.orientation]
         for x, i in zip(range(self.curr_piece.x, self.curr_piece.x + len(piece)), range(len(piece))):
@@ -81,10 +90,11 @@ class Tetris():
             self.clear_rows(num_full_rows)
 
     def rotate_piece(self):
-        self.undraw_piece()
-        self.curr_piece.orientation= (
-            self.curr_piece.orientation + 1) % len(self.curr_piece.tetromino)
-        self.draw_piece()
+        if self.check_rotation():
+            self.undraw_piece()
+            self.curr_piece.orientation= (
+                self.curr_piece.orientation + 1) % len(self.curr_piece.tetromino)
+            self.draw_piece()
 
     def draw_piece(self):
         piece= self.curr_piece.tetromino[self.curr_piece.orientation]
