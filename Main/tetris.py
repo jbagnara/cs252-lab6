@@ -85,9 +85,9 @@ class Tetris():
         self.curr_piece.y += 1
         self.draw_piece()
 
-        num_full_rows = self.count_full_rows()
-        if num_full_rows > 0:
-            self.clear_rows(num_full_rows)
+        listFull = self.count_full_rows()
+        if len(listFull) > 0:
+            self.clear_rows(listFull)
 
     def rotate_piece(self):
         if self.check_rotation():
@@ -119,39 +119,38 @@ class Tetris():
 
         return True
 
-    def count_full_rows(self):
+    def count_full_rows(self): 
+        listFull = []	#list of filled rows
         num_full_rows = 0
         for y in range(self.height-1, 0, -1):
             if self.is_row_full(y):
+                print(y)
+                listFull.append(y)
                 num_full_rows += 1
 
-        return num_full_rows
+        return listFull
 
-    def clear_rows(self, num_full_rows):
+    def clear_rows(self, listFull):
         #update score
-        if num_full_rows == 1: #single
+        if len(listFull) == 1: #single
             self.score += 40
-        elif num_full_rows == 2: #double
+        elif len(listFull) == 2: #double
             self.score += 100
-        elif num_full_rows == 3: #triple
+        elif len(listFull) == 3: #triple
             self.score += 300
-        elif num_full_rows >= 4: #tetris
+        elif len(listFull) >= 4: #tetris
             self.score += 1200
 
         #clear rows
-        for y in range(self.height-num_full_rows, self.height):
+        for y in range(len(listFull)-1, -1, -1):	#clears every row in listFull
             for x in range(self.width):
-                self.field[x][y] = CellState.EMPTY
-                self.bool_field[x][y] = 0
+                self.field[x][listFull[y]] = CellState.EMPTY
+                self.bool_field[x][listFull[y]] = 0
+                for z in range(listFull[y], 0, -1):	#lower every row above
+                    self.field[x][z] = self.field[x][z-1]
+                    self.bool_field[x][z] = self.bool_field[x][z-1]
 
-        #move rows down
-        for y in range(self.height-1, 0, -1):
-            for x in range(self.width):
-                self.field[x][y] = self.field[x][y-num_full_rows]
-                self.bool_field[x][y] = self.bool_field[x][y-num_full_rows]
-            
-        #add new rows at top
-        for y in range(num_full_rows):
+        for y in range(len(listFull)):	#Adds new empty rows to top
             for x in range(self.width):
                 self.field[x][y] = CellState.EMPTY
                 self.bool_field[x][y] = 0
