@@ -39,10 +39,7 @@ class TetrisConsumer(AsyncWebsocketConsumer):
 
     async def game_loop(self):
         while True:
-            print('loop')
             self.tetris.move_piece_down()
-
-            print('x:', self.tetris.curr_piece.x, 'y:', self.tetris.curr_piece.y)
 
             await self.channel_layer.group_send(
                 self.room_group_name,
@@ -68,6 +65,14 @@ class TetrisConsumer(AsyncWebsocketConsumer):
             self.tetris.move_piece_right()
         elif (move == Moves.DOWN):
             self.tetris.move_piece_down()
+            num_full_rows = self.tetris.clear_rows()
+            if num_full_rows > 0:
+            #     #send extra message for an extra frame
+            #     await self.channel_layer.group_send(
+            #         self.room_group_name,
+            #         {'type': 'update_game'}
+            #     )
+                self.tetris.move_rows_down(num_full_rows)
 
         #send message to room group
         await self.channel_layer.group_send(
@@ -78,7 +83,8 @@ class TetrisConsumer(AsyncWebsocketConsumer):
     async def update_game(self, event):
         #send message to each client
         await self.send(text_data=json.dumps({
-            'field': self.tetris.field
+            'field': self.tetris.field,
+            'bool_field': self.tetris.bool_field
         }))
 
     async def disconnect(self, close_code):

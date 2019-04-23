@@ -1,4 +1,0 @@
-Django==2.1.7
-channels==2.1.7
-channels-redis==2.3.3
-daphne==2.3.0
