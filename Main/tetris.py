@@ -18,6 +18,11 @@ class Tetris():
         self.curr_piece = Piece()  # get random tetromino
         self.draw_piece()
 
+        #for debugging row removal
+        for x in range(self.width-1):
+            self.field[x][self.height-1] = CellState.I
+            self.bool_field[x][self.height-1] = 1
+
     def check_bottom(self):  # checks that bottom is reached
         piece = self.curr_piece.tetromino[self.curr_piece.orientation]
         for y in range(len(piece)-1, -1, -1):
@@ -51,7 +56,9 @@ class Tetris():
         self.curr_piece.y += 1
         self.draw_piece()
 
-        self.clear_rows()
+        num_full_rows = self.count_full_rows()
+        if num_full_rows > 0:
+            self.clear_rows(num_full_rows)
 
     def rotate_piece(self):
         self.undraw_piece()
@@ -77,21 +84,20 @@ class Tetris():
 
     def is_row_full(self, row):
         for x in range(self.width):
-            if self.field[x][row] == CellState.EMPTY:
+            if self.bool_field[x][row] == 0:
                 return False
 
         return True
 
-    def clear_rows(self):
-        #check for full rows
+    def count_full_rows(self):
         num_full_rows = 0
         for y in range(self.height-1, 0, -1):
             if self.is_row_full(y):
                 num_full_rows += 1
 
-        if num_full_rows == 0:
-            return
+        return num_full_rows
 
+    def clear_rows(self, num_full_rows):
         #update score
         if num_full_rows == 1: #single
             self.score += 40

@@ -14,7 +14,7 @@ class TetrisConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = 'tetris_{self.room_name}'
+        self.room_group_name = 'tetris_' + self.room_name
 
         #create and get game
         if not self.room_name in self.games:
@@ -53,6 +53,8 @@ class TetrisConsumer(AsyncWebsocketConsumer):
                 raise
     
     async def receive(self, text_data):
+        print('reveice')
+
         #get updates from a single client
         data = json.loads(text_data)
         move = data['move']
@@ -77,7 +79,7 @@ class TetrisConsumer(AsyncWebsocketConsumer):
         #send message to each client
         await self.send(text_data=json.dumps({
             'field': self.tetris.field,
-            'bool_field': self.tetris.bool_field
+            'bool_field': self.tetris.bool_field #for debugging only
         }))
 
     async def disconnect(self, close_code):
