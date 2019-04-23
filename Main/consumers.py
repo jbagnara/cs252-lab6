@@ -14,7 +14,7 @@ class TetrisConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = f'tetris_{self.room_name}'
+        self.room_group_name = 'tetris_{self.room_name}'
 
         #create and get game
         if not self.room_name in self.games:
