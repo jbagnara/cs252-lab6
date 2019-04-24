@@ -25,3 +25,4 @@ django-mysql==3.0.0.post1
 django-oauth-toolkit
 django-cors-middleware
 django-heroku
+gunicorn
