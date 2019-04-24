@@ -8,20 +8,19 @@ const PIECES = [
     [j,"orange"]
 ];
 
-const game_width = 10;
-const game_height = 20;
+function Field(canvas_grid, canvas, game_width, game_height) {
+    this.game_width = game_width;
+    this.game_height = game_height;
 
-function Field() {
-    this.canvas_grid = document.getElementById("canvas_grid");
+    this.canvas_grid = document.getElementById(canvas_grid);
     this.height = this.canvas_grid.offsetHeight;
     this.width = this.canvas_grid.offsetWidth;
-    this.cellSize = this.width / 10; //assumes width and height have correct porportions
+    this.cellSize = this.width / this.game_width; //assumes width and height have correct porportions
 
     this.canvas_grid = this.canvas_grid.getContext("2d");
     this.init();
 
-    this.canvas = document.getElementById("canvas").getContext("2d");
-    this.canvas.lineJoin = "miter";
+    this.canvas = document.getElementById(canvas).getContext("2d");
     this.canvas.fillStyle = "white";
     this.canvas.fillRect(0, 0, this.width, this.height);
 }
@@ -85,9 +84,17 @@ Field.prototype.undrawBlock = function(x, y) {
 }
 
 Field.prototype.drawField = function(board) {
-    for( x = 0; x < game_width; x++) {
-        for(y = 0; y < game_height; y++) {
+    for( x = 0; x < board.length; x++) {
+        for(y = 0; y < board[x].length; y++) {
             this.drawBlock(x, y, board[x][y]);
+        }
+    }
+}
+
+Field.prototype.clearField = function(board) {
+    for( x = 0; x < this.game_width; x++) {
+        for(y = 0; y < this.game_height; y++) {
+            this.drawBlock(x, y, "white");
         }
     }
 }
@@ -111,3 +118,4 @@ Field.prototype.drawBoolField = function(bool_board) {
         }
     }
 }
+

@@ -20,6 +20,8 @@ class Tetris():
         self.curr_piece = Piece()  # get random tetromino
         self.draw_piece()
 
+        self.next_piece = Piece()
+
         #for debugging row removal
         for y in range(self.height-1, self.height-5, -1):
             for x in range(self.width-1):
@@ -36,7 +38,8 @@ class Tetris():
         return 0
 
     def new_piece(self): 	#helper to spawn new tetromino
-        self.curr_piece = Piece()
+        self.curr_piece = self.next_piece
+        self.next_piece = Piece()
         if self.check_gameOver():
             #gameover, do something
             print("gameover")
@@ -147,7 +150,7 @@ class Tetris():
         num_full_rows = 0
         for y in range(self.height-1, 0, -1):
             if self.is_row_full(y):
-                print(y)
+                #print(y)
                 listFull.append(y)
                 num_full_rows += 1
 

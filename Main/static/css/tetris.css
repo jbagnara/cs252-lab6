@@ -11,3 +11,17 @@
     left: 20px;
     top: 20px;
 }
+
+#canvas_grid_next {
+    z-index: 1;
+    position: absolute;
+}
+
+#canvas_next {
+    z-index: 0;
+    position: absolute;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-align: center
+}

@@ -35,7 +35,9 @@ class TetrisConsumer(AsyncWebsocketConsumer):
         #send init game state
         await self.send(text_data=json.dumps({
             'field': self.tetris.field,
-            'bool_field': self.tetris.bool_field
+            'score': self.tetris.score,
+            'next_piece': self.tetris.next_piece.tetromino[0] #debug only
+            #'bool_field': self.tetris.bool_field
         }))
 
     async def game_loop(self):
@@ -78,7 +80,9 @@ class TetrisConsumer(AsyncWebsocketConsumer):
         #send message to each client
         await self.send(text_data=json.dumps({
             'field': self.tetris.field,
-            'bool_field': self.tetris.bool_field #for debugging only
+            'score': self.tetris.score,
+            'next_piece': self.tetris.next_piece.tetromino[0]
+            #'bool_field': self.tetris.bool_field #for debugging only
         }))
 
     async def disconnect(self, close_code):
