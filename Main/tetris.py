@@ -19,9 +19,10 @@ class Tetris():
         self.draw_piece()
 
         #for debugging row removal
-        for x in range(self.width-1):
-            self.field[x][self.height-1] = CellState.I
-            self.bool_field[x][self.height-1] = 1
+        for y in range(self.height-1, self.height-5, -1):
+            for x in range(self.width-1):
+                self.field[x][y] = CellState.I
+                self.bool_field[x][y] = 1
 
     def check_bottom(self):  # checks that bottom is reached
         piece = self.curr_piece.tetromino[self.curr_piece.orientation]
@@ -30,8 +31,8 @@ class Tetris():
                 if piece[x][y] != CellState.EMPTY:
                     if self.curr_piece.y+y+1 > self.height-1 or self.bool_field[self.curr_piece.x+x][self.curr_piece.y+y+1]==1:  # bottom reached
                         self.write_piece()
-                        self.curr_piece = Piece()
-                        self.draw_piece()
+                        return 1
+        return 0
 
     def check_leftside(self):  # checks left indexes	
         piece = self.curr_piece.tetromino[self.curr_piece.orientation]
@@ -80,14 +81,17 @@ class Tetris():
             self.draw_piece()
 
     def move_piece_down(self):
-        self.check_bottom()
+        bottomReached = self.check_bottom()
+        listFull = self.count_full_rows()
+        if len(listFull) > 0:
+            self.clear_rows(listFull)
+        if bottomReached:
+            self.curr_piece = Piece()
+            self.draw_piece()
         self.undraw_piece()
         self.curr_piece.y += 1
         self.draw_piece()
 
-        listFull = self.count_full_rows()
-        if len(listFull) > 0:
-            self.clear_rows(listFull)
 
     def rotate_piece(self):
         if self.check_rotation():
