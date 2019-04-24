@@ -60,6 +60,7 @@ class TetrisConsumer(AsyncWebsocketConsumer):
         move = data['move']
 
         #update game state 
+
         if (move == Moves.LEFT):
             self.tetris.move_piece_left()
         elif (move == Moves.ROTATE):

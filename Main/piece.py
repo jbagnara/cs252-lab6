@@ -60,4 +60,4 @@ class Piece():
 
 		#pos of top left block
         self.x = 3
-        self.y = 4
+        self.y = -1
