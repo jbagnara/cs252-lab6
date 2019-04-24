@@ -53,8 +53,6 @@ class TetrisConsumer(AsyncWebsocketConsumer):
                 raise
     
     async def receive(self, text_data):
-        print('reveice')
-
         #get updates from a single client
         data = json.loads(text_data)
         move = data['move']
