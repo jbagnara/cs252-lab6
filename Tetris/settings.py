@@ -137,11 +137,12 @@ ASGI_APPLICATION = 'Tetris.routing.application'
 # ASGI_APPLICATION = 'routing.application'
 
 # "BACKEND": "asgi_redis.core.RedisChannelLayer",
+# "BACKEND": "channels_redis.core.RedisChannelLayer",
 # "hosts": [("localhost", 6379)],
 # 'ROUTING': 'Tetris.routing.channel_routing',
 CHANNEL_LAYERS = {
 	"default": {
-		"BACKEND": "channels_redis.core.RedisChannelLayer",
+		"BACKEND": "asgi_redis.core.RedisChannelLayer",
 		"CONFIG": {
 			"hosts": [("127.0.0.1", 6379)],
 		},
