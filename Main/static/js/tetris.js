@@ -1,5 +1,5 @@
 var field = new Field();
-var socket = new WebSocket("ws://" + window.location.host +
+var socket = new WebSocket("wss://" + window.location.host +
                             "/ws/tetris/" + roomName + "/");
 
 socket.onmessage = function(event) {
