@@ -1,3 +1,1 @@
-web: gunicorn Tetris.wsgi --log-file -
-web: daphne -b 127.0.0.1 -p 6379 Tetris.asgi:application
-worker: python manage.py runworker
+web: daphne Tetris.asgi:application --port $PORT -- bind 0.0.0.0
