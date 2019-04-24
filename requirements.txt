@@ -23,3 +23,6 @@ channels_redis==2.3.3
 mysqlclient==1.4.2.post1
 django-mysql==3.0.0.post1
 django-oauth-toolkit
+django-cors-middleware
+django-heroku
+gunicorn
