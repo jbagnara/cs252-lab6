@@ -1,5 +1,6 @@
 var field = new Field("canvas_grid", "canvas", 10, 20);
 var field_next = new Field("canvas_grid_next", "canvas_next", 4, 4);
+var score_element = document.getElementById("score");
 
 var socket = new WebSocket("ws://" + window.location.host +
                             "/ws/tetris/" + roomName + "/");
@@ -11,10 +12,12 @@ socket.onmessage = function(event) {
     var data = JSON.parse(event.data);
     var board = data['field'];
     var next_piece = data['next_piece'];
+    var score = data['score'];
 
     field.drawField(board);
     field_next.clearField();
     field_next.drawField(next_piece);
+    score_element.innerHTML = score;
     
     //only for debugging
     // var bool_board = data['bool_field'];
