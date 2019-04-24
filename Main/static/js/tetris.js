@@ -12,8 +12,8 @@ socket.onmessage = function(event) {
     field.drawField(board);
     
     //only for debugging
-    var bool_board = data['bool_field'];
-    field.drawBoolField(bool_board);
+    // var bool_board = data['bool_field'];
+    // field.drawBoolField(bool_board);
 };
 
 socket.onclose = function(event) {

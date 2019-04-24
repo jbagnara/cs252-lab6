@@ -1,4 +1,5 @@
 from . piece import CellState, Piece
+import time
 
 
 class Tetris():
@@ -14,6 +15,7 @@ class Tetris():
 
         self.num_players = 0
         self.score = 0
+        self.gameOver = 0
 
         self.curr_piece = Piece()  # get random tetromino
         self.draw_piece()
@@ -23,6 +25,23 @@ class Tetris():
             for x in range(self.width-1):
                 self.field[x][y] = CellState.I
                 self.bool_field[x][y] = 1
+    
+    def check_gameOver(self):	#will check if newly spawned tetromino is inserted into one
+        piece = self.curr_piece.tetromino[(self.curr_piece.orientation)]
+        for y in range(len(piece)-1, 0, -1):
+            for x in range(len(piece)-1, 0, -1):
+                if piece[x][y] != CellState.EMPTY:
+                    if self.bool_field[self.curr_piece.x+x][self.curr_piece.y+y]==1:  #clipping occured from rotation
+                        return 1
+        return 0
+
+    def new_piece(self): 	#helper to spawn new tetromino
+        self.curr_piece = Piece()
+        if self.check_gameOver():
+            #gameover, do something
+            print("gameover")
+            self.draw_piece()
+            self.gameOver = 1
 
     def check_bottom(self):  # checks that bottom is reached
         piece = self.curr_piece.tetromino[self.curr_piece.orientation]
@@ -86,7 +105,7 @@ class Tetris():
         if len(listFull) > 0:
             self.clear_rows(listFull)
         if bottomReached:
-            self.curr_piece = Piece()
+            self.new_piece()
             self.draw_piece()
         self.undraw_piece()
         self.curr_piece.y += 1
