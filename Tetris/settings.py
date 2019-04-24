@@ -26,8 +26,9 @@ SECRET_KEY = '4zd0fb*h#vvn*os*ir&@*w8rg0f77)x^frr$p2hruqypv9t9y*'
 DEBUG = True
 
 # damp-wave-85305
-ALLOWED_HOSTS = ['localhost','127.0.0.1','https://cs252tetris.herokuapp.com/',
-                   'https://damp-wave-85305.herokuapp.com/']
+# ALLOWED_HOSTS = ['localhost','127.0.0.1','https://cs252tetris.herokuapp.com/', 'https://damp-wave-85305.herokuapp.com/']
+
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
