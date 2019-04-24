@@ -53,7 +53,7 @@ class Tetris():
         return 1
 
     def check_rotation(self):
-        piece = self.curr_piece.tetromino[(self.curr_piece.orientation+1 + 1) % len(self.curr_piece.tetromino)]
+        piece = self.curr_piece.tetromino[(self.curr_piece.orientation+1) % len(self.curr_piece.tetromino)]
         for y in range(len(piece)-1, -1, -1):
             for x in range(len(piece)-1, -1, -1):
                 if piece[x][y] != CellState.EMPTY:
