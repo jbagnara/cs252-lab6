@@ -5,6 +5,30 @@
     width: 50%;
 }
 
+#scores {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
 div {
-        text-align: center;
+    text-align: center;
+}
+
+table {
+    padding: 20px;
+}
+
+td {
+    text-align: left;
+    padding: 15px;
+    font-size: 32px;
+}
+
+th {
+    text-align: left;
+    padding: 15px;
+    font-size: 36px;
+    color: #31e01e
 }

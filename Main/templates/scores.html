@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Everybody Plays Tetris</title>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+    </head>
+<body>
+    <table id="scores">
+        <tr>
+            <th></th>
+            <th>Score</th>
+            <th>Name</th>
+            <th>Date</th>
+        </tr>
+        {% for score in scores %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{score.score}}</td>
+                <td>{{score.room_name}}</td>
+                <td>{{score.date}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
