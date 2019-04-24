@@ -11,3 +11,13 @@
     left: 20px;
     top: 20px;
 }
+
+#canvas_grid_next {
+    z-index: 1;
+    position: absolute;
+}
+
+#canvas_next {
+    z-index: 0;
+    position: absolute;
+}

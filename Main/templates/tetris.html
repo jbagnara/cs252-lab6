@@ -8,13 +8,27 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel="stylesheet" type="text/css" href="{% static 'css/tetris.css' %}">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     </head>
 
     <body>
-        <div style"position:relative">
-            <!--keep width and height here not in css, otherwise the canvas will look strange-->
-            <canvas id="canvas_grid" width="300px" height="600px"></canvas> <!--displays the grid and borders-->
-            <canvas id="canvas" width="300px" height="600px"></canvas> <!--displays everything else-->
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                     <!--keep width and height here not in css, otherwise the canvas will look strange-->
+                    <canvas id="canvas_grid" width="350px" height="700px"></canvas> <!--displays the grid and borders-->
+                    <canvas id="canvas" width="350px" height="700px"></canvas> <!--displays everything else-->
+                </div>
+                <div class="col-sm-2">
+                    <canvas id="canvas_grid_next" width="140px" height="140px"></canvas> <!--displays the next block-->
+                    <canvas id="canvas_next" width="140px" height="140px"></canvas> <!--displays the next block-->
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
         </div>
 
         <script>
