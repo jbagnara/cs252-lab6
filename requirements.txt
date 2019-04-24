@@ -6,7 +6,6 @@ async-timeout==3.0.1
 pytz==2018.9
 six==1.12.0
 txaio==18.8.1
-zope.interface==17.5.0
 constantly==15.1.0
 incremental==17.5.0
 Automat==0.7.0
@@ -21,7 +20,6 @@ aioredis==1.2.0
 msgpack==0.6.1
 hiredis==1.0.0
 channels_redis==2.3.3
-pypiwin32==223
-pywin32==224
 mysqlclient==1.4.2.post1
 django-mysql==3.0.0.post1
+django-oauth-toolkit
