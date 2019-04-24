@@ -147,7 +147,7 @@ CHANNEL_LAYERS = {
 			"hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
 		},
 
-		'ROUTING': 'Tetris.routing.channel_routing',
+		# 'ROUTING': 'Tetris.routing.channel_routing',
 	},
 }
 
