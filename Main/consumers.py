@@ -37,7 +37,8 @@ class TetrisConsumer(AsyncWebsocketConsumer):
             'field': self.tetris.field,
             'score': self.tetris.score,
             'next_piece': self.tetris.next_piece.tetromino[0],
-            'game_over': self.tetris.game_over
+            'game_over': self.tetris.game_over,
+            'num_players': self.tetris.num_players
             #'bool_field': self.tetris.bool_field
         }))
 
@@ -83,7 +84,8 @@ class TetrisConsumer(AsyncWebsocketConsumer):
             'field': self.tetris.field,
             'score': self.tetris.score,
             'next_piece': self.tetris.next_piece.tetromino[0],
-            'game_over': self.tetris.game_over
+            'game_over': self.tetris.game_over,
+            'num_players': self.tetris.num_players
             #'bool_field': self.tetris.bool_field #for debugging only
         }))
 

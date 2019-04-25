@@ -7,7 +7,7 @@ def home(request):
     return render(request, 'home.html')
 
 def scores(request):
-    scores = Score.objects.order_by('score')[:100]
+    scores = Score.objects.order_by('-score')[:100]
     return render(request, 'scores.html', {'scores':scores})
 
 def game_over(request):
