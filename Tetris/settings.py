@@ -79,7 +79,6 @@ WSGI_APPLICATION = 'Tetris.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
 		'ENGINE': 'django.db.backends.mysql',
@@ -90,6 +89,13 @@ DATABASES = {
 		'PORT': '3306',
     }
 }
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': ''
+    }
+}
+"""
 
 
 # Password validation
