@@ -1,5 +1,6 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from . tetris import Tetris
+from . models import Score
 import asyncio
 import json
 
@@ -62,7 +63,6 @@ class TetrisConsumer(AsyncWebsocketConsumer):
         move = data['move']
 
         #update game state 
-
         if (move == Moves.LEFT):
             self.tetris.move_piece_left()
         elif (move == Moves.ROTATE):
@@ -93,10 +93,15 @@ class TetrisConsumer(AsyncWebsocketConsumer):
         self.tetris.num_players -= 1
 
         #close game if needed
+        if hasattr(self, 'loop_task'):
+            self.loop_task.cancel()
+
         if self.tetris.num_players <= 0:
             self.games.pop(self.room_name)
-            if hasattr(self, 'loop_task'):
-                self.loop_task.cancel()
+
+            if self.tetris.game_over == 1:
+                score = Score(score=self.tetris.score, name=self.tetris.name)
+                score.save()
 
         #leave room group
         await self.channel_layer.group_discard(

@@ -10,7 +10,7 @@ var game_over = 0;
 var num_players = 0;
 
 socket.onmessage = function(event) {
-    console.log('got data from server');
+    //console.log('got data from server');
 
     //get data from server
     var data = JSON.parse(event.data);
@@ -19,7 +19,6 @@ socket.onmessage = function(event) {
     var score = data['score'];
     game_over = data['game_over'];
     num_players = data['num_players'];
-    console.log(num_players);
 
     if (game_over == 1) {
         socket.close();
@@ -39,7 +38,7 @@ socket.onmessage = function(event) {
 
 socket.onclose = function(event) {
     if (game_over == 1) {
-        console.log('game_over');
+        //console.log('game_over');
         document.location.href = '/game_over/';
     }
     else {
@@ -50,7 +49,7 @@ socket.onclose = function(event) {
 
 //send updates to server
 function CONTROL (event) {
-    console.log('sending data to server');
+    //console.log('sending data to server');
 
     if (event.keyCode >= 37 && event.keyCode <= 40) { //if arrow key
         socket.send(JSON.stringify({
