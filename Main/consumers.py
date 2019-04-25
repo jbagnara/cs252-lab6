@@ -18,7 +18,7 @@ class TetrisConsumer(AsyncWebsocketConsumer):
 
         #create and get game
         if not self.room_name in self.games:
-            self.games[self.room_name] = Tetris()
+            self.games[self.room_name] = Tetris(self.room_name)
             self.loop_task = asyncio.create_task(self.game_loop())
 
         self.tetris = self.games[self.room_name] #available to all clients in a room group
@@ -81,7 +81,8 @@ class TetrisConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'field': self.tetris.field,
             'score': self.tetris.score,
-            'next_piece': self.tetris.next_piece.tetromino[0]
+            'next_piece': self.tetris.next_piece.tetromino[0],
+            'game_over': self.tetris.game_over
             #'bool_field': self.tetris.bool_field #for debugging only
         }))
 
