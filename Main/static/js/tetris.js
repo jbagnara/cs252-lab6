@@ -5,11 +5,22 @@ var score_element = document.getElementById("score");
 var socket = new WebSocket("wss://" + window.location.host +
                             "/ws/tetris/" + roomName + "/");
 
+var game_over = 0;
+
 socket.onmessage = function(event) {
     console.log('got data from server');
 
     //get data from server
     var data = JSON.parse(event.data);
+    var board = data['field'];
+    var next_piece = data['next_piece'];
+    var score = data['score'];
+    game_over = data['game_over'];
+
+    if (game_over == 1) {
+        socket.close();
+    }
+
     var board = data['field'];
     var next_piece = data['next_piece'];
     var score = data['score'];
@@ -25,17 +36,25 @@ socket.onmessage = function(event) {
 };
 
 socket.onclose = function(event) {
-    console.error("socket closed unexpectedly");
+    if (game_over == 1) {
+        console.log('game_over');
+        document.location.href = '/game_over/';
+    }
+    else {
+        console.error("socket closed unexpectedly");
+    }
+    
 };
 
 //send updates to server
 function CONTROL (event) {
     console.log('sending data to server');
 
-    //TODO: only send keyboard input
-    socket.send(JSON.stringify({
-        'move': event.keyCode
-    }));
+    if (event.keyCode >= 37 && event.keyCode <= 40) { //if arrow key
+        socket.send(JSON.stringify({
+            'move': event.keyCode
+        }));
+    }
 }
 
 document.addEventListener("keyup",CONTROL);

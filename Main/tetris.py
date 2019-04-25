@@ -1,9 +1,9 @@
 from . piece import CellState, Piece
-import time
+from . models import Score
 
 
 class Tetris():
-    def __init__(self):
+    def __init__(self, name):
         self.width = 10
         self.height = 20
 
@@ -15,7 +15,8 @@ class Tetris():
 
         self.num_players = 0
         self.score = 0
-        self.gameOver = 0
+        self.name = name
+        self.game_over = 0
 
         self.curr_piece = Piece()  # get random tetromino
         self.draw_piece()
@@ -28,7 +29,7 @@ class Tetris():
                 self.field[x][y] = CellState.I
                 self.bool_field[x][y] = 1
     
-    def check_gameOver(self):	#will check if newly spawned tetromino is inserted into one
+    def check_game_over(self):	#will check if newly spawned tetromino is inserted into one
         piece = self.curr_piece.tetromino[(self.curr_piece.orientation)]
         for y in range(len(piece)-1, 0, -1):
             for x in range(len(piece)-1, 0, -1):
@@ -40,11 +41,12 @@ class Tetris():
     def new_piece(self): 	#helper to spawn new tetromino
         self.curr_piece = self.next_piece
         self.next_piece = Piece()
-        if self.check_gameOver():
+        if self.check_game_over():
             #gameover, do something
             print("gameover")
+            #Score.create(score=self.score, name=self.name) should work, but doesn't
             self.draw_piece()
-            self.gameOver = 1
+            self.game_over = 1
 
     def check_bottom(self):  # checks that bottom is reached
         piece = self.curr_piece.tetromino[self.curr_piece.orientation]
