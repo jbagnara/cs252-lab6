@@ -43,9 +43,7 @@ class Tetris():
         self.next_piece = Piece()
         if self.check_game_over():
             #gameover, do something
-            print("gameover")
-            score = Score(score=self.score, name=self.name)
-            score.save()
+            #print("gameover")
             self.draw_piece()
             self.game_over = 1
 
