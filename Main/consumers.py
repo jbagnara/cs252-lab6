@@ -36,7 +36,8 @@ class TetrisConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'field': self.tetris.field,
             'score': self.tetris.score,
-            'next_piece': self.tetris.next_piece.tetromino[0] #debug only
+            'next_piece': self.tetris.next_piece.tetromino[0],
+            'game_over': self.tetris.game_over
             #'bool_field': self.tetris.bool_field
         }))
 
