@@ -44,7 +44,7 @@ class Tetris():
         if self.check_game_over():
             #gameover, do something
             print("gameover")
-            #Score.create(score=self.score, name=self.name) should work, but doesn't
+            Score.create(score=self.score, name=self.name) # should work, but doesn't
             self.draw_piece()
             self.game_over = 1
 
