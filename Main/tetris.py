@@ -24,10 +24,10 @@ class Tetris():
         self.next_piece = Piece()
 
         #for debugging row removal
-        for y in range(self.height-1, self.height-5, -1):
-            for x in range(self.width-1):
-                self.field[x][y] = CellState.I
-                self.bool_field[x][y] = 1
+        # for y in range(self.height-1, self.height-5, -1):
+        #     for x in range(self.width-1):
+        #         self.field[x][y] = CellState.I
+        #         self.bool_field[x][y] = 1
     
     def check_game_over(self):	#will check if newly spawned tetromino is inserted into one
         piece = self.curr_piece.tetromino[(self.curr_piece.orientation)]
@@ -44,7 +44,7 @@ class Tetris():
         if self.check_game_over():
             #gameover, do something
             print("gameover")
-            #Score.create(score=self.score, name=self.name) should work, but doesn't
+            Score.create(score=self.score, name=self.name) #should work, but doesn't
             self.draw_piece()
             self.game_over = 1
 

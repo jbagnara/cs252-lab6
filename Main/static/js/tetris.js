@@ -2,7 +2,7 @@ var field = new Field("canvas_grid", "canvas", 10, 20);
 var field_next = new Field("canvas_grid_next", "canvas_next", 4, 4);
 var score_element = document.getElementById("score");
 
-var socket = new WebSocket("wss://" + window.location.host +
+var socket = new WebSocket("ws://" + window.location.host +
                             "/ws/tetris/" + roomName + "/");
 
 var game_over = 0;
@@ -20,10 +20,6 @@ socket.onmessage = function(event) {
     if (game_over == 1) {
         socket.close();
     }
-
-    var board = data['field'];
-    var next_piece = data['next_piece'];
-    var score = data['score'];
 
     field.drawField(board);
     field_next.clearField();
