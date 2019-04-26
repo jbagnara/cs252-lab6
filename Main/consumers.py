@@ -1,5 +1,6 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from . tetris import Tetris
+from . models import Score
 import asyncio
 import json
 
@@ -37,7 +38,8 @@ class TetrisConsumer(AsyncWebsocketConsumer):
             'field': self.tetris.field,
             'score': self.tetris.score,
             'next_piece': self.tetris.next_piece.tetromino[0],
-            'game_over': self.tetris.game_over
+            'game_over': self.tetris.game_over,
+            'num_players': self.tetris.num_players
             #'bool_field': self.tetris.bool_field
         }))
 
@@ -61,7 +63,6 @@ class TetrisConsumer(AsyncWebsocketConsumer):
         move = data['move']
 
         #update game state 
-
         if (move == Moves.LEFT):
             self.tetris.move_piece_left()
         elif (move == Moves.ROTATE):
@@ -83,7 +84,8 @@ class TetrisConsumer(AsyncWebsocketConsumer):
             'field': self.tetris.field,
             'score': self.tetris.score,
             'next_piece': self.tetris.next_piece.tetromino[0],
-            'game_over': self.tetris.game_over
+            'game_over': self.tetris.game_over,
+            'num_players': self.tetris.num_players
             #'bool_field': self.tetris.bool_field #for debugging only
         }))
 
@@ -91,10 +93,15 @@ class TetrisConsumer(AsyncWebsocketConsumer):
         self.tetris.num_players -= 1
 
         #close game if needed
+        if hasattr(self, 'loop_task'):
+            self.loop_task.cancel()
+
         if self.tetris.num_players <= 0:
             self.games.pop(self.room_name)
-            if hasattr(self, 'loop_task'):
-                self.loop_task.cancel()
+
+            if self.tetris.game_over == 1:
+                score = Score(score=self.tetris.score, name=self.tetris.name)
+                score.save()
 
         #leave room group
         await self.channel_layer.group_discard(
