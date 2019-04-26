@@ -51,7 +51,9 @@
             var roomName = document.querySelector('#room-name-input').value;
             if (roomName.length != 0) {
                 window.location.pathname = '/tetris/' + roomName + '/';
-            } 
+            } else {
+                window.alert("Can't be an empty room!")
+            }
         };
 
         document.querySelector('#room-name-random').onclick = function(e) {
