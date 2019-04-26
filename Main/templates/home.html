@@ -50,17 +50,17 @@
         document.querySelector('#room-name-submit').onclick = function(e) {
             var roomName = document.querySelector('#room-name-input').value;
 
-            if (roomName.length != 0) {
-                window.location.pathname = '/tetris/' + roomName + '/';
-            } else {
-                window.alert("Room name cannot be empty!")
-            }
+            //if (roomName.length != 0) {
+            //    window.location.pathname = '/tetris/' + roomName + '/';
+            //} else {
+            //    window.alert("Room name cannot be empty!")
+            //}
             var reg = new RegExp ("^([a-zA-Z0-9\-._]+)$");
-    	    if (reg.test(roomName)) {
+    	    if (reg.test(roomName) && roomName.length != 0) {
                 window.location.pathname = '/tetris/' + roomName + '/';
             }
             else {
-                window.alert("Must be alphanumeric, hypheons, periods!");
+                window.alert("Ribbit. Must be alphanumeric, hypheons, periods! Additionally, the field cannot be empty");
             }
         };
 
