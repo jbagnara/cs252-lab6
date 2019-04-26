@@ -49,7 +49,11 @@
 
         document.querySelector('#room-name-submit').onclick = function(e) {
             var roomName = document.querySelector('#room-name-input').value;
-            window.location.pathname = '/tetris/' + roomName + '/';
+            var reg = new RegExp ("^([a-zA-Z0-9\-._]+)$");
+	    if (reg.test(roomName))
+                window.location.pathname = '/tetris/' + roomName + '/';
+            else
+		alert("Must be alphanumeric, hypheons, periods!");
         };
 
         document.querySelector('#room-name-random').onclick = function(e) {
